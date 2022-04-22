@@ -22,7 +22,7 @@ def sort_nicely(l):
     """
     l.sort(key=alphanum_key)
 
-shadow_files = [k for k in os.listdir() if 'shadow' in k]
+shadow_files = [k for k in os.listdir("shadows") if 'shadow' in k]
 sort_nicely(shadow_files)
 
 ####
@@ -34,10 +34,10 @@ geometry = o3d.io.read_point_cloud("points.ply")
 vis.add_geometry(geometry)
 
 for i in shadow_files:
-    illu = np.load(i)
+    illu = np.load(os.path.join("shadows",i))
     geometry.colors = o3d.utility.Vector3dVector((np.ones((3,illu.shape[0]))*illu).T)
     vis.update_geometry(geometry)
     vis.poll_events()
     vis.update_renderer()
-    vis.capture_screen_image(i.split(".")[0]+".png")
+    vis.capture_screen_image("pics/" + i.split(".")[0]+".png")
 vis.destroy_window()
